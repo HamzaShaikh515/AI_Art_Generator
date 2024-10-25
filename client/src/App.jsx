@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/nav' // Import the Navbar
+import Navbar from './components/nav'; // Import the Navbar
 import { Home, CreatePost, SignupPage, LoginPage } from './page';
 import CommunityPage from './page/Communitypage';
 import ProfilePage from './page/ProfilePage';
@@ -8,12 +8,37 @@ import PrivateRoute from './components/PrivateRoute'; // Adjust the path as need
 import AudioImageGen from "./page/AudioImageGen";
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (accessToken && user) {
+      setIsLoggedIn(true);
+      setUsername(user.username);
+    }
+  }, []);
+
+  const handleLogin = (user) => {
+    setIsLoggedIn(true);
+    setUsername(user.username);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setUsername('');
+  };
+
   return (
     <Router>
-      <Navbar /> {/* Include the Navbar here */}
+      <Navbar isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout} /> {/* Include the Navbar here */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/signup" element={<SignupPage />} />
         
         {/* Protect these routes */}
@@ -30,5 +55,3 @@ const App = () => {
 };
 
 export default App;
-
-
