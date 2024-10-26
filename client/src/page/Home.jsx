@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -23,7 +24,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-cream min-h-screen">
+    <div className="bg-cream min-h-screen flex flex-col">
       <style>
         {`
           .bg-cream {
@@ -38,11 +39,23 @@ const HomePage = () => {
             object-fit: cover; /* Ensure images cover the specified dimensions */
             margin: 0 auto; /* Center the image */
           }
+          .footer {
+            background-color: #008080; /* Teal */
+            color: white;
+            text-align: center; /* Center text */
+            padding: 1rem 0;
+            margin-top: auto; /* Pushes footer to the bottom */
+          }
+          .footer a {
+            color: white; /* White text for links */
+            text-decoration: underline; /* Underline for links */
+          }
+           
         `}
       </style>
 
-      <div className="p-4">
-        <h2 className="text-3xl font-bold text-teal">
+      <div className="p-4 flex-grow">
+        <h2 className="text-3xl font-bold text-teal mb-4 ">
           Welcome to the world of Art
         </h2>
         <Slider {...settings} className="mt-4">
@@ -58,6 +71,14 @@ const HomePage = () => {
           ))}
         </Slider>
       </div>
+
+      <footer className="footer">
+        <p>&copy; {new Date().getFullYear()} AI Image. All rights reserved.</p>
+        <p>
+        <Link to="/terms">Terms of Service</Link> | 
+        <Link to="/privacy"> Privacy Policy</Link>
+        </p>
+      </footer>
     </div>
   );
 };
